@@ -43,18 +43,9 @@ static unsigned int tripleclicktimeout = 600;
 /* alt screens */
 int allowaltscreen = 1;
 
-/* allow certain non-interactive (insecure) window operations such as:
-   setting the clipboard text */
-int allowwindowops = 0;
-
-/*
- * draw latency range in ms - from new content/keypress/etc until drawing.
- * within this range, st draws when content stops arriving (idle). mostly it's
- * near minlatency, but it waits longer for slow updates to avoid partial draw.
- * low minlatency will tear/flicker more, as it can "detect" idle too early.
- */
-static double minlatency = 8;
-static double maxlatency = 33;
+/* frames per second st should at maximum draw to the screen */
+static unsigned int xfps = 120;
+static unsigned int actionfps = 30;
 
 /*
  * blinking timeout (set to 0 to disable blinking) for the terminal blinking
@@ -120,8 +111,6 @@ static const char *colorname[] = {
 	/* more colors can be added after 255 to use with DefaultXX */
 	"#cccccc",
 	"#555555",
-	"gray90", /* default foreground colour */
-	"black", /* default background colour */
 };
 
 
@@ -129,10 +118,25 @@ static const char *colorname[] = {
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 258;
-unsigned int defaultbg = 259;
-unsigned int defaultcs = 256;
+unsigned int defaultfg = 7;
+unsigned int defaultbg = 0;
+static unsigned int defaultcs = 256;
 static unsigned int defaultrcs = 257;
+unsigned int const currentBg = 6, buffSize = 2048;
+/// Enable double / triple click yanking / selection of word / line.
+int const mouseYank = 1, mouseSelect = 0;
+/// [Vim Browse] Colors for search results currently on screen.
+unsigned int const highlightBg = 160, highlightFg = 15;
+char const wDelS[] = "!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~", wDelL[] = " \t";
+char *nmKeys [] = {              ///< Shortcusts executed in normal mode
+  "R/Building\nN", "r/Building\n", "X/juli@machine\nN", "x/juli@machine\n",
+  "Q?[Leaving vim, starting execution]\n","F/: error:\nN", "f/: error:\n", "DQf"
+};
+unsigned int const amountNmKeys = sizeof(nmKeys) / sizeof(*nmKeys);
+/// Style of the {command, search} string shown in the right corner (y,v,V,/)
+Glyph styleSearch = {' ', ATTR_ITALIC | ATTR_BOLD_FAINT, 7, 16};
+Glyph style[] = {{' ',ATTR_ITALIC|ATTR_FAINT,15,16}, {' ',ATTR_ITALIC,232,11},
+                 {' ', ATTR_ITALIC, 232, 4}, {' ', ATTR_ITALIC, 232, 12}};
 
 /*
  * Default shape of cursor
@@ -177,9 +181,7 @@ static uint forcemousemod = ShiftMask;
 static MouseShortcut mshortcuts[] = {
 	/* mask                 button   function        argument       release */
 	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
-	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
 	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
-	{ ShiftMask,            Button5, ttysend,        {.s = "\033[6;2~"} },
 	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
 };
 
@@ -201,6 +203,7 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
+	{ MODKEY,               XK_c,           normalMode,     {.i =  0} },
 };
 
 /*

@@ -1,0 +1,22 @@
+patching file Makefile
+patching file config.def.h
+patching file normalMode.c
+patching file normalMode.h
+patching file st.c
+Hunk #5 succeeded at 236 with fuzz 2 (offset 1 line).
+Hunk #6 succeeded at 448 (offset 1 line).
+Hunk #7 succeeded at 467 with fuzz 2 (offset 1 line).
+Hunk #8 succeeded at 504 (offset 1 line).
+Hunk #9 succeeded at 555 (offset 1 line).
+Hunk #10 succeeded at 570 (offset 1 line).
+Hunk #11 succeeded at 588 (offset 1 line).
+Hunk #12 succeeded at 641 (offset 1 line).
+Hunk #13 succeeded at 655 (offset 1 line).
+Hunk #14 succeeded at 2421 (offset 1 line).
+Hunk #15 succeeded at 2523 (offset 1 line).
+Hunk #16 succeeded at 2551 with fuzz 2 (offset 1 line).
+Hunk #17 succeeded at 2614 (offset 2 lines).
+patching file st.h
+patching file utils.h
+patching file win.h
+patching file x.c

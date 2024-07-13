@@ -1,10 +1,10 @@
 # st version
-VERSION = 0.9
+VERSION = 0.8.3
 
 # Customize below to fit your system
 
 # paths
-PREFIX = ~/.local/
+PREFIX = ~/.local
 MANPREFIX = $(PREFIX)/share/man
 
 X11INC = /usr/X11R6/include
@@ -28,9 +28,8 @@ STLDFLAGS = $(LIBS) $(LDFLAGS)
 # OpenBSD:
 #CPPFLAGS = -DVERSION=\"$(VERSION)\" -D_XOPEN_SOURCE=600 -D_BSD_SOURCE
 #LIBS = -L$(X11LIB) -lm -lX11 -lutil -lXft \
-#       `$(PKG_CONFIG) --libs fontconfig` \
-#       `$(PKG_CONFIG) --libs freetype2`
-#MANPREFIX = ${PREFIX}/man
+#       `pkg-config --libs fontconfig` \
+#       `pkg-config --libs freetype2`
 
 # compiler and linker
 # CC = c99

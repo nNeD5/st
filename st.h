@@ -8,6 +8,7 @@
 #define MAX(a, b)		((a) < (b) ? (b) : (a))
 #define LEN(a)			(sizeof(a) / sizeof(a)[0])
 #define BETWEEN(x, a, b)	((a) <= (x) && (x) <= (b))
+#define OUT(x, a, b)		((a) <= (x) || (x) <= (b))
 #define DIVCEIL(n, d)		(((n) + ((d) - 1)) / (d))
 #define DEFAULT(a, b)		(a) = (a) ? (a) : (b)
 #define LIMIT(x, a, b)		(x) = (x) < (a) ? (a) : (x) > (b) ? (b) : (x)
@@ -89,9 +90,10 @@ void toggleprinter(const Arg *);
 int tattrset(int);
 void tnew(int, int);
 void tresize(int, int);
+void tmoveto(int x, int y);
 void tsetdirtattr(int);
 void ttyhangup(void);
-int ttynew(const char *, char *, const char *, char **);
+int ttynew(char *, char *, char *, char **);
 size_t ttyread(void);
 void ttyresize(int, int);
 void ttywrite(const char *, size_t, int);
@@ -109,7 +111,7 @@ size_t utf8encode(Rune, char *);
 
 void *xmalloc(size_t);
 void *xrealloc(void *, size_t);
-char *xstrdup(const char *);
+char *xstrdup(char *);
 
 /* config.h globals */
 extern char *utmp;
@@ -118,9 +120,7 @@ extern char *stty_args;
 extern char *vtiden;
 extern wchar_t *worddelimiters;
 extern int allowaltscreen;
-extern int allowwindowops;
 extern char *termname;
 extern unsigned int tabspaces;
 extern unsigned int defaultfg;
 extern unsigned int defaultbg;
-extern unsigned int defaultcs;
