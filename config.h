@@ -6,8 +6,7 @@
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 static char *font = "ZedMonoNerdFont Mono:pixelsize=24:antialias=true:autohint=true";
-static int borderpx = 2;
-
+static int borderpx = 0;
 /*
  * What program is execed by st depends of these precedence rules:
  * 1: program passed with -e
@@ -45,7 +44,7 @@ int allowaltscreen = 1;
 
 /* allow certain non-interactive (insecure) window operations such as:
    setting the clipboard text */
-int allowwindowops = 0;
+int allowwindowops = 1;
 
 /*
  * draw latency range in ms - from new content/keypress/etc until drawing.
@@ -91,7 +90,7 @@ char *termname = "st-256color";
  *
  *	stty tabs
  */
-unsigned int tabspaces = 8;
+unsigned int tabspaces = 4;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
@@ -120,10 +119,9 @@ static const char *colorname[] = {
 	/* more colors can be added after 255 to use with DefaultXX */
 	"#cccccc",
 	"#555555",
-	"gray90", /* default foreground colour */
-	"#111111", /* default background colour */
+	"#ebdbb2", /* default foreground colour */
+	"#282828", /* default background colour */
 };
-
 
 /*
  * Default colors (colorname index)
@@ -141,7 +139,7 @@ static unsigned int defaultrcs = 257;
  * 6: Bar ("|")
  * 7: Snowman ("☃")
  */
-static unsigned int cursorshape = 2;
+static unsigned int cursorshape = 4;
 
 /*
  * Default columns and rows numbers
@@ -197,7 +195,7 @@ static Shortcut shortcuts[] = {
 	{ ControlMask,          XK_minus,       zoom,           {.f = -1} },
 	{ ControlMask,          XK_equal,       zoomreset,      {.f =  0} },
 	/*{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },*/
-	/*{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },*/
+	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
